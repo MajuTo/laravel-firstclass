@@ -1,0 +1,12 @@
+{
+    "name": "majuto/laravel-firstclass",
+    "description": "Interact with Firstclass through Laravel",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "MajuTo\\LaravelFirstclass\\": "src/MajuTo/LaravelFirstclass/"
+        }
+    },
+    "license": "GNU GPL v3",
+    "require": {}
+}
