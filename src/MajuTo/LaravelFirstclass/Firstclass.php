@@ -46,6 +46,22 @@ class Firstclass
     }
 
     /**
+     * @param string $uid Uid
+     * @param string $firstname
+     * @param string $lastname
+     * @param string $password
+     * @param string $group
+     *
+     * @return FirstClass
+     */
+    public function addUSer($uid, $firstname, $lastname, $password, $group = 'Personnels')
+    {
+        $this->newUsers .= "ADD NETWORK " . $uid . " " . $firstname . " \"\" " . $lastname . " \"\" " . $password . " \"\" \"\" \"\" 1 " . $group;
+
+        return $this;
+    }
+
+    /**
      * @param string $firstname Prénom
      * @param string $lastname Nom de famille
      * @param string $list_name Nom de la liste sous format "list-nom_liste"
@@ -243,7 +259,7 @@ class Firstclass
         return $this;
     }
 
-    protected function makeBody ()
+    public function makeBody ()
     {
         $body = '';
 
