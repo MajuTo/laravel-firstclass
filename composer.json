@@ -7,6 +7,6 @@
             "MajuTo\\LaravelFirstclass\\": "src/MajuTo/LaravelFirstclass/"
         }
     },
-    "license": "GNU GPL v3",
+    "license": "GPL-3.0",
     "require": {}
 }
