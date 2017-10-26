@@ -47,6 +47,7 @@ class Firstclass
     }
 
     /**
+     * ADD NETWORK uid "Firstname" "i" "LASTNAME" "dept" "password" "postalAddress" "phone1" "phone2" "group1"
      * @param string $uid Uid
      * @param string $firstname
      * @param string $lastname
@@ -57,7 +58,7 @@ class Firstclass
      */
     public function addUSer($uid, $firstname, $lastname, $password, $group = 'Personnels')
     {
-        $this->newUsers .= "ADD NETWORK " . $uid . " " . $firstname . " \"\" " . $lastname . " \"\" " . $password . " \"\" \"\" \"\" 1 " . $group;
+        $this->newUsers .= "ADD NETWORK " . $uid . " \"" . $firstname . "\" \"\" " . $lastname . " \"\" \"" . $password . "\" \"\" \"\" \"\" 1 \"" . $group . "\" \n";
 
         return $this;
     }
@@ -100,7 +101,7 @@ class Firstclass
             throw new \Exception('ERREUR : Le nom du groupe doit être une chaîne de caractères');
         }
 
-        $this->usersAddedToGroups .= "PGADD " . $user_id . " " . $group_name . " +c\n";
+        $this->usersAddedToGroups .= "PGADD " . $user_id . " \"" . $group_name . "\" \n";
 
         return $this;
     }
@@ -118,7 +119,7 @@ class Firstclass
             throw new \Exception('ERREUR : Le nom du groupe doit être une chaîne de caractères');
         }
 
-        $this->usersRemovedFromGroups .= "PGDEL " . $user_id . " " . $group_name . " +c\n";
+        $this->usersRemovedFromGroups .= "PGDEL " . $user_id . " \"" . $group_name . "\" \n";
 
         return $this;
     }
@@ -153,7 +154,7 @@ class Firstclass
     public function ifGroupMissing ($group)
     {
         $this->ifGroups .= "IF OBJECT \"Groups:" . $group . "\" MISSING\n";
-        $this->ifGroups .= "NEW \"Groups\"\"" . $group . "\" \"\" FormDoc 23003 -1 -1 124 124 -U\n";
+        $this->ifGroups .= "NEW \"Groups\" \"" . $group . "\" \"\" FormDoc 23003 -1 -1 124 124 -U\n";
         $this->ifGroups .= "Put Previous 1272.0 7 602\n";
         $this->ifGroups .= "ENDIF\n\n";
 
@@ -169,7 +170,7 @@ class Firstclass
     public function ifListMissing ($list)
     {
         $this->ifLists .= "IF OBJECT \"Mail Lists:" . $list . "\" MISSING\n";
-        $this->ifLists .= "NEW \"Mail Lists\"\"" . $list . "\" \"\" FormDoc 23005 -1 -1 118 118 +P -U\n";
+        $this->ifLists .= "NEW \"Mail Lists\" \"" . $list . "\" \"\" FormDoc 23005 -1 -1 118 118 +P -U\n";
         $this->ifLists .= "PGADD \"" . $list . " Administratif\n";
         $this->ifLists .= "ENDIF\n\n";
 
@@ -190,17 +191,17 @@ class Firstclass
         $row = '';
         if ($firstname != null)
         {
-            $row .= ' 1202 0 ' . str_replace(' ', '-', $firstname);
+            $row .= ' 1202 0 "' . str_replace(' ', '-', $firstname) . '"';
         }
 
         if ($lastname != null)
         {
-            $row .= ' 1204 0 ' . $lastname;
+            $row .= ' 1204 0 "' . $lastname . '"';
         }
 
         if ($password != null)
         {
-            $row .= ' 1217 0 ' . $password;
+            $row .= ' 1217 0 "' . $password . '"';
         }
 
         if ($remote)
@@ -253,7 +254,7 @@ class Firstclass
             die('ERREUR : Les alias doivent êtres fournis en chaîne de caractères');
         }
 
-        $this->updatedUsers .= "PUT USER " . $uid . " 1252 0 " . $aliases . "\n";
+        $this->updatedUsers .= "PUT USER " . $uid . " 1252 0 \"" . $aliases . "\" \n";
 
         return $this;
     }
@@ -282,7 +283,7 @@ class Firstclass
     {
         $body = '';
 
-        if ( $this->reply && ($this->ifGroups || $this->ifLists || $this->newUsers || $this->updatedUsers || $this->usersAddedToGroups || $this->usersAddedToLists || $this->listsToClean) )
+        if ( $this->reply && ($this->ifGroups || $this->ifLists || $this->newUsers || $this->updatedUsers || $this->usersAddedToGroups || $this->usersRemovedFromGroups|| $this->usersAddedToLists || $this->listsToClean) )
         {
             $body .= "REPLY\n";
         }
@@ -291,6 +292,7 @@ class Firstclass
         $body .= ($this->ifLists) ? $this->ifLists . "\n" : '';
         $body .= ($this->newUsers) ? $this->newUsers . "\n" : '';
         $body .= ($this->updatedUsers) ? $this->updatedUsers . "\n" : '';
+        $body .= ($this->usersRemovedFromGroups) ? $this->usersRemovedFromGroups . "\n" : '';
         $body .= ($this->usersAddedToGroups) ? $this->usersAddedToGroups . "\n" : '';
         $body .= ($this->usersAddedToLists) ? $this->usersAddedToLists . "\n" : '';
 
