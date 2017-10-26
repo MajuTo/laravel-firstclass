@@ -12,6 +12,7 @@ class Firstclass
     protected $updatedUsers;
     protected $deletedUser;
     protected $usersAddedToGroups;
+    protected $usersRemovedFromGroups;
     protected $usersAddedToLists;
     protected $listsToClean;
     protected $reply;
@@ -100,6 +101,24 @@ class Firstclass
         }
 
         $this->usersAddedToGroups .= "PGADD " . $user_id . " " . $group_name . " +c\n";
+
+        return $this;
+    }
+
+    /**
+     * @param String $user_id
+     * @param String $group_name
+     * @return Firstclass
+     * @throws \Exception
+     */
+    public function removeUserFromGroup ($user_id, $group_name)
+    {
+        if ( !is_string( $group_name ) )
+        {
+            throw new \Exception('ERREUR : Le nom du groupe doit être une chaîne de caractères');
+        }
+
+        $this->usersRemovedFromGroups .= "PGDEL " . $user_id . " " . $group_name . " +c\n";
 
         return $this;
     }
