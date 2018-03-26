@@ -186,35 +186,36 @@ class Firstclass
      * @param int $remote
      * @return Firstclass
      */
-    public function updateUser ($uid, $firstname = null, $lastname = null, $password = null, $remote = 0)
+    public function updateUser ($uid, $firstname = null, $lastname = null, $password = null, $aliases = '', $remote = 0)
     {
         $row = '';
-        if ($firstname != null)
-        {
+        if ($firstname != null) {
             $row .= ' 1202 0 "' . str_replace(' ', '-', $firstname) . '"';
         }
 
-        if ($lastname != null)
-        {
+        if ($lastname != null) {
             $row .= ' 1204 0 "' . $lastname . '"';
         }
 
-        if ($password != null)
-        {
+        if ($password != null) {
             $row .= ' 1217 0 "' . $password . '"';
         }
 
-        if ($remote)
-        {
+        if ($remote) {
             $row .= ' 1223 7 5';
-        }
-        else
-        {
+        } else {
             $row .= ' 1223 7 1';
         }
 
-        if ( $row != '' )
-        {
+        if ($aliases) {
+            if (is_array($aliases)) {
+                $row .= ' 1252 0 ' . implode(',', $aliases);
+            } else {
+                $row .= ' 1252 0 ' . str_replace(';', ',', $aliases);
+            }
+        }
+
+        if ( $row != '' ) {
             $row = 'PUT USER ' . $uid . $row . "\n";
         }
 
