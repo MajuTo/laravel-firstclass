@@ -40,6 +40,7 @@ class Firstclass
         $this->newUsers = '';
         $this->updatedUsers = '';
         $this->usersAddedToGroups = '';
+        $this->usersRemovedFromGroups = '';
         $this->usersAddedToLists = '';
         $this->listsToClean = '';
 
