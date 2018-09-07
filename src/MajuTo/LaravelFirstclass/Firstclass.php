@@ -59,7 +59,7 @@ class Firstclass
      */
     public function addUSer($uid, $firstname, $lastname, $password, $group = 'Personnels')
     {
-        $this->newUsers .= "ADD NETWORK " . $uid . " \"" . $firstname . "\" \"\" " . $lastname . " \"\" \"" . $password . "\" \"\" \"\" \"\" 1 \"" . $group . "\" \n";
+        $this->newUsers .= "ADD NETWORK " . $uid . " \"" . $firstname . "\" \"\" \"" . $lastname . "\" \"\" \"" . $password . "\" \"\" \"\" \"\" 1 \"" . $group . "\" \n";
 
         return $this;
     }
